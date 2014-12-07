@@ -8,6 +8,8 @@ import javax.swing.JOptionPane;
 public class Magician {
     private static final String dbURL = "jdbc:derby://localhost:1527/Magician Application";
     public static Connection connection;
+    private static final Waitlist waitlist = new Waitlist();
+    private static final Bookings bookings = new Bookings();
     
     //constructor just connects to the database
     Magician(){
@@ -38,7 +40,6 @@ public class Magician {
     //add a magician to the database
     public void addMagician(String name){
         PreparedStatement statement;
-        MagicianApplication GUI = new MagicianApplication();
         try {
             statement = connection.prepareStatement("INSERT INTO Magician "
                     + "(Name) VALUES (?)");
@@ -47,6 +48,8 @@ public class Magician {
         } catch (SQLException exception){
             JOptionPane.showMessageDialog(null, "Magician already exists");
         }
+        
+        waitlist.magicianAdded(name);
     }
     
     //remove magician from the database

@@ -1,5 +1,6 @@
 
 import java.sql.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -8,6 +9,7 @@ import java.sql.*;
 public class Waitlist {
     private static final String dbURL = "jdbc:derby://localhost:1527/Magician Application";
     public static Connection connection;
+    private static final Bookings bookings = new Bookings();
     
     Waitlist(){
         try{
@@ -58,5 +60,28 @@ public class Waitlist {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
+    }
+    
+    
+    //updates the bookings and waitlsit database when a magician is removed
+    void magicianAdded(String name) {
+        PreparedStatement statement;
+        ResultSet results;
+        
+        //get all the unique holidays with distinct
+        try{
+            //this is quite and odd statement.
+            //it picks all the columns so that it gets all the information, since timestamp is always unique
+            statement = connection.prepareStatement("SELECT DISTINCT Holiday, Timestamp FROM Waitlist "
+                    + "ORDER BY Timestamp ASC");
+            results = statement.executeQuery();
+            while(results.next()){
+                JOptionPane.showMessageDialog(null,results.getString("Holiday"));
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        
+        //add those distinct values to bookings
     }
 }

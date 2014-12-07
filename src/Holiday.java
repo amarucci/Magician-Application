@@ -23,9 +23,23 @@ public class Holiday {
         PreparedStatement statement;
         
         try {
-            statement = connection.prepareStatement("INSERT INTO Holiday (Holiday) "
+            statement = connection.prepareStatement("INSERT INTO Holiday (name) "
                     + "VALUES (?)");
             statement.setString(1, holidayName);
+            statement.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+    
+    public void removeHoliday(String holidayName){
+        PreparedStatement statement;
+        
+        try {
+            statement = connection.prepareStatement("DELETE FROM Holiday "
+                    + "WHERE Name = ?");
+            statement.setString(1, holidayName);
+            statement.executeUpdate();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
