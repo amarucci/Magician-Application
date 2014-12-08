@@ -1,5 +1,6 @@
 
 import java.sql.*;
+import java.util.Calendar;
 import javax.swing.JOptionPane;
 
 /**
@@ -46,8 +47,9 @@ public class Waitlist {
     }
 
     //add an entry to the waitlist
-    public void insertWaitlist(String holiday, java.sql.Timestamp currentTimestamp, String name){
+    public void insertWaitlist(String holiday, String name){
         PreparedStatement statement;
+        java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
         
         try {
             statement = connection.prepareStatement("INSERT INTO Waitlist "
@@ -78,7 +80,27 @@ public class Waitlist {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
+    }
+    
+    //adds customers to the waitlist when a magician is remoevd
+    void magicianRemoved(String name){
+        PreparedStatement statement;
+        ResultSet results;
+        java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
         
-        //add those distinct values to bookings
+        results = bookings.getBookingsByMagician(name);
+        
+        try{
+            while(results.next()){
+                statement = connection.prepareStatement("INSERT INTO Waitlist "
+                        + "(Customer, Holiday,Timestamp) VALUES (?,?,?)");
+                statement.setString(1,results.getString("Customer"));
+                statement.setString(2,results.getString("Holiday"));
+                statement.setTimestamp(3,currentTimestamp);
+                statement.executeUpdate();
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
     }
 }

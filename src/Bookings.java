@@ -46,17 +46,16 @@ public class Bookings {
     }
     
     //adds the booking to the data base
-    private void insertBooking(String magician, String holiday, java.sql.Timestamp currentTimestamp, String name){
+    private void insertBooking(String magician, String holiday, String name){
         PreparedStatement statement;
         
         try {
             statement = connection.prepareStatement("INSERT INTO Booking "
-                        + "(Magician, timeStamp, holiday, customer) "
-                        + "VALUES (?, ?, ?, ?)");
+                        + "(Magician, holiday, customer) "
+                        + "VALUES (?, ?, ?)");
                 statement.setString(1, magician);
-                statement.setTimestamp(2, currentTimestamp);
-                statement.setString(3, holiday);  
-                statement.setString(4, name);
+                statement.setString(2, holiday);  
+                statement.setString(3, name);
                 statement.executeUpdate();
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -66,29 +65,28 @@ public class Bookings {
     //adds a bookign to the bookings database
     public void addBooking(String name, String holiday){
         String magician;
-        java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
         Waitlist waitlist = new Waitlist();
         magician = getFreeMagicians(holiday);
         
         if(magician != null){ //book them becuase there is a person avaliable
-            insertBooking(magician, holiday, currentTimestamp, name);
+            insertBooking(magician, holiday, name);
             JOptionPane.showMessageDialog(null, name+" was booked for "
                         +holiday +" with magician "+magician);
         }else{ //put them in the waitlist
-            waitlist.insertWaitlist(holiday, currentTimestamp,name);
+            waitlist.insertWaitlist(holiday,name);
             JOptionPane.showMessageDialog(null, name+" was wait listed for " + holiday);
         }
     }
     
     //returns the booking information for a given holiday
-    public ResultSet getBookingsByHoliday(String holiday){
+    public ResultSet getBookingsByMagician(String name){
         PreparedStatement statement;
         ResultSet results;
         
         try {
             statement = connection.prepareStatement("SELECT * FROM Booking"
-                    + "WHERE Holiday = ?");
-            statement.setString(1,holiday);
+                    + "WHERE Magician = ?");
+            statement.setString(1,name);
             results = statement.executeQuery();
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -125,5 +123,18 @@ public class Bookings {
         }
         
         return magician;
+    }
+    
+    public void magicianRemoved(String name){
+        PreparedStatement statement;
+        
+        try {
+            statement = connection.prepareStatement("DELETE * FROM Booking"
+                    + "WHERE Magician = ?");
+            statement.setString(1,name);
+            statement.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
     }
 }
