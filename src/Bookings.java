@@ -104,10 +104,11 @@ public class Bookings {
         ResultSet results;
         String magician;
         
+        //I use Magician.Name here just to be sure its picking from the magician tablee
         try{
             statement = connection.prepareStatement("SELECT Name FROM Magician"
-                    + " WHERE Name NOT IN (Select Magician FROM Booking"
-                    + " WHERE Holiday = ?)");
+                    + " WHERE Magician.Name NOT IN (Select Booking.Magician FROM Booking"
+                    + " WHERE Booking.Holiday = ?)");
             statement.setString(1,holiday);
             results = statement.executeQuery();
             

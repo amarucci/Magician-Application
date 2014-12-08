@@ -472,7 +472,7 @@ public class MagicianApplication extends javax.swing.JFrame {
     
     //outputs the waitlist info to the text area
     private void outputWaitList(ResultSet results){
-        String format = "%-20s %-12s %s %n";
+        String format = "%-15s %-12s %s %n";
         String output = String.format(format,"Customer","Holiday","Timestamp");
         
         //sets the text field all pretty and stuff

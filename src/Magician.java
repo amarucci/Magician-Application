@@ -45,11 +45,12 @@ public class Magician {
                     + "(Name) VALUES (?)");
             statement.setString(1, name);
             statement.executeUpdate();
+            
+            //updates the wait and booking list
+            waitlist.magicianAdded(name);
         } catch (SQLException exception){
             JOptionPane.showMessageDialog(null, "Magician already exists");
         }
-        
-        waitlist.magicianAdded(name);
     }
     
     //remove magician from the database

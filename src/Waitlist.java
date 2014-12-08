@@ -70,13 +70,10 @@ public class Waitlist {
         
         //get all the unique holidays with distinct
         try{
-            //this is quite and odd statement.
-            //it picks all the columns so that it gets all the information, since timestamp is always unique
-            statement = connection.prepareStatement("SELECT DISTINCT Holiday, Timestamp FROM Waitlist "
-                    + "ORDER BY Timestamp ASC");
+            statement = connection.prepareStatement("SELECT * FROM Waitlist ORDER BY Timestamp ASC");
             results = statement.executeQuery();
             while(results.next()){
-                JOptionPane.showMessageDialog(null,results.getString("Holiday"));
+                JOptionPane.showMessageDialog(null,results.getString("Holiday")+" "+results.getString("Customer"));
             }
         } catch (SQLException exception) {
             exception.printStackTrace();
