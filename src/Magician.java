@@ -8,8 +8,9 @@ import javax.swing.JOptionPane;
 public class Magician {
     private static final String dbURL = "jdbc:derby://localhost:1527/Magician Application";
     public static Connection connection;
-    private static final Waitlist waitlist = new Waitlist();
-    private static final Bookings bookings = new Bookings();
+    private static PreparedStatement statement;
+    private static ResultSet results;
+        
     
     //constructor just connects to the database
     Magician(){
@@ -22,10 +23,7 @@ public class Magician {
     }
     
     //returns the list of all the magicians
-    public ResultSet getMagicianList(){
-        PreparedStatement statement;
-        ResultSet results;
-        
+    public static ResultSet getMagicianList(){
         try {
             statement = connection.prepareStatement("SELECT * FROM Magician");
             results = statement.executeQuery();
@@ -38,8 +36,7 @@ public class Magician {
     }
     
     //add a magician to the database
-    public void addMagician(String name){
-        PreparedStatement statement;
+    public static void addMagician(String name){
         try {
             statement = connection.prepareStatement("INSERT INTO Magician "
                     + "(Name) VALUES (?)");
@@ -52,15 +49,14 @@ public class Magician {
                     that takes off the waitlist
             or should it all be done here using the methods of the class?
             */
-            waitlist.magicianAdded(name);
+            Waitlist.magicianAdded(name);
         } catch (SQLException exception){
             JOptionPane.showMessageDialog(null, "Magician already exists");
         }
     }
     
     //remove magician from the database
-    public void removeMagician(String name){
-        PreparedStatement statement;
+    public static void removeMagician(String name){
         try {
             statement = connection.prepareStatement("DELETE FROM Magician "
                     + "WHERE Name = ?");
@@ -68,8 +64,8 @@ public class Magician {
             statement.executeUpdate();
             
             //updates the booking and then the waitlist
-            bookings.magicianRemoved(name);
-            waitlist.magicianRemoved(name);
+            Bookings.magicianRemoved(name);
+            Waitlist.magicianRemoved(name);
         } catch (SQLException exception){
             exception.printStackTrace();
         }

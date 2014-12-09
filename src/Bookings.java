@@ -8,6 +8,8 @@ import javax.swing.JOptionPane;
 public class Bookings {
     private static final String dbURL = "jdbc:derby://localhost:1527/Magician Application";
     public static Connection connection;
+    private static PreparedStatement statement;
+    private static ResultSet results;
     
     //connects to the data base when the class is made
     Bookings(){
@@ -22,15 +24,12 @@ public class Bookings {
     //simply returns all the bookings in the database
     //calls the other get bookings method with no search filter, just so its
     //not weird when you call it
-    public ResultSet getBookings(){
+    public static ResultSet getBookings(){
         return getBookings("");
     }
     
     //returns all the bookings but with a filter
-    public ResultSet getBookings(String filter){
-        PreparedStatement statement;
-        ResultSet results;
-        
+    public static ResultSet getBookings(String filter){        
         try {
             statement = connection.prepareStatement("SELECT * FROM Booking "
                     + "WHERE Holiday LIKE ?");
@@ -45,9 +44,7 @@ public class Bookings {
     }
     
     //adds the booking to the data base
-    private void insertBooking(String magician, String holiday, String name){
-        PreparedStatement statement;
-        
+    private static void insertBooking(String magician, String holiday, String name){
         try {
             statement = connection.prepareStatement("INSERT INTO Booking "
                         + "(Magician, holiday, customer) "
@@ -62,9 +59,8 @@ public class Bookings {
     }
     
     //adds a bookign to the bookings database
-    public void addBooking(String name, String holiday){
+    public static void addBooking(String name, String holiday){
         String magician;
-        Waitlist waitlist = new Waitlist();
         magician = getFreeMagicians(holiday);
         
         if(magician != null){ //book them becuase there is a person avaliable
@@ -72,16 +68,13 @@ public class Bookings {
             JOptionPane.showMessageDialog(null, name+" was booked for "
                         +holiday +" with magician "+magician);
         }else{ //put them in the waitlist
-            waitlist.insertWaitlist(holiday,name);
+            Waitlist.insertWaitlist(holiday,name);
             JOptionPane.showMessageDialog(null, name+" was wait listed for " + holiday);
         }
     }
     
     //returns the booking information for a given holiday
-    public ResultSet getBookingsByMagician(String name){
-        PreparedStatement statement;
-        ResultSet results;
-        
+    public static ResultSet getBookingsByMagician(String name){
         try {
             statement = connection.prepareStatement("SELECT * FROM Booking "
                     + "WHERE Magician = ?");
@@ -96,9 +89,7 @@ public class Bookings {
     }
     
     //returns a set of magicians that are free for a given date
-    public String getFreeMagicians(String holiday) {
-        PreparedStatement statement;
-        ResultSet results;
+    public static String getFreeMagicians(String holiday) {
         String magician;
         
         //I use Magician.Name here just to be sure its picking from the magician tablee
@@ -125,10 +116,7 @@ public class Bookings {
     }
     
     //deletes the rows where the magician who was removed had bookings
-    public void magicianRemoved(String name){
-        PreparedStatement statement;
-        ResultSet results;
-        
+    public static void magicianRemoved(String name){
         try {
             //get all the people that had that magician
             statement = connection.prepareStatement("SELECT * FROM Booking "
@@ -154,9 +142,7 @@ public class Bookings {
     }
 
     //removes anyone with this holiday booked
-    void removeHoliday(String holidayName) {
-        PreparedStatement statement;
-        
+    public static void removeHoliday(String holidayName) {
         try{
             statement = connection.prepareStatement("DELETE FROM Booking "
                     + "WHERE Holiday = ?");

@@ -5,10 +5,6 @@ import javax.swing.JOptionPane;
 
 /*Anthony Marucci*/
 public class MagicianApplication extends javax.swing.JFrame {
-    Bookings bookings = new Bookings();
-    Waitlist waitlist = new Waitlist();
-    Holiday holiday = new Holiday();
-    Magician magician = new Magician();
     /**
      * Creates new form MagicianApplication
      */
@@ -360,30 +356,30 @@ public class MagicianApplication extends javax.swing.JFrame {
     }//GEN-LAST:event_btnApplyActionPerformed
 
     private void btnBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookActionPerformed
-        bookings.addBooking(txtFirstName.getText() + " " + txtLastName.getText(),
+        Bookings.addBooking(txtFirstName.getText() + " " + txtLastName.getText(),
             (String)cmbPickHoliday.getSelectedItem());
     }//GEN-LAST:event_btnBookActionPerformed
 
     private void btnAddMagicianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMagicianActionPerformed
-        magician.addMagician(txtMagician.getText());
+        Magician.addMagician(txtMagician.getText());
         updateRemoveMagician();
     }//GEN-LAST:event_btnAddMagicianActionPerformed
 
     private void btnAddHolidayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddHolidayActionPerformed
-        holiday.addHoliday(txtHoliday.getText());
+        Holiday.addHoliday(txtHoliday.getText());
         updateHoliday();
     }//GEN-LAST:event_btnAddHolidayActionPerformed
 
     private void btnRemoveMagicianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveMagicianActionPerformed
         if(JOptionPane.showConfirmDialog(this.rootPane,"Are you sure you want to remove this magician?") == JOptionPane.YES_OPTION){
-            magician.removeMagician((String)cmbRemoveMagician.getSelectedItem());
+            Magician.removeMagician((String)cmbRemoveMagician.getSelectedItem());
             updateRemoveMagician();
         }
     }//GEN-LAST:event_btnRemoveMagicianActionPerformed
 
     private void btnRemoveHolidayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveHolidayActionPerformed
         if(JOptionPane.showConfirmDialog(this.rootPane,"Are you sure you want to remove this holiday?") == JOptionPane.YES_OPTION){
-            holiday.removeHoliday((String)cmbRemoveHoliday.getSelectedItem());
+            Holiday.removeHoliday((String)cmbRemoveHoliday.getSelectedItem());
             updateHoliday();
         }
     }//GEN-LAST:event_btnRemoveHolidayActionPerformed
@@ -396,7 +392,7 @@ public class MagicianApplication extends javax.swing.JFrame {
     public void updateRemoveMagician(){
         ResultSet results;
         try {
-            results = magician.getMagicianList();
+            results = Magician.getMagicianList();
             cmbRemoveMagician.removeAllItems();
             if (results.next()){//checks if it has any values
                 cmbRemoveMagician.setEnabled(true);
@@ -421,7 +417,7 @@ public class MagicianApplication extends javax.swing.JFrame {
     public void updateHoliday(){
         ResultSet results;
         try {
-            results = holiday.getHolidays();
+            results = Holiday.getHolidays();
             
             cmbPickHoliday.removeAllItems();
             cmbRemoveHoliday.removeAllItems();
@@ -452,9 +448,9 @@ public class MagicianApplication extends javax.swing.JFrame {
     //applies a filter to the 
     private void applyFilter(){
         if(rbtnBookings.isSelected()){
-            outputBookings(bookings.getBookings(txtFilter.getText()));
+            outputBookings(Bookings.getBookings(txtFilter.getText()));
         }else if (rbtnWaitlist.isSelected()){
-            outputWaitList(waitlist.getWaitList(txtFilter.getText()));
+            outputWaitList(Waitlist.getWaitList(txtFilter.getText()));
         }else{
             JOptionPane.showMessageDialog(null, "Nothing selected");
             txtFilter.setText("Filter");
@@ -503,16 +499,16 @@ public class MagicianApplication extends javax.swing.JFrame {
         if(rbtnBookings.isSelected()){
             //filter By Holiday is by detault in the text box so if they change it and still want the filter
             if("Filter By Holiday".equals(txtFilter.getText())){
-                outputBookings(bookings.getBookings()); //haven't changed the filter, display all
+                outputBookings(Bookings.getBookings()); //haven't changed the filter, display all
             }else{
-                outputBookings(bookings.getBookings(txtFilter.getText())); //chagned filter, only show filtered
+                outputBookings(Bookings.getBookings(txtFilter.getText())); //chagned filter, only show filtered
             }
         } else if(rbtnWaitlist.isSelected()){
             //filter is by detauly in the text box so if they change it and still want the filter
             if("Filter By Holiday".equals(txtFilter.getText())){ 
-                outputWaitList(waitlist.getWaitList());//haven't changed the filter, display all
+                outputWaitList(Waitlist.getWaitList());//haven't changed the filter, display all
             }else{
-                outputWaitList(waitlist.getWaitList(txtFilter.getText()));//chagned filter, only show filtered
+                outputWaitList(Waitlist.getWaitList(txtFilter.getText()));//chagned filter, only show filtered
             }
         }
     }

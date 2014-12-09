@@ -3,13 +3,13 @@
  */
 
 import java.sql.*;
-import javax.swing.JOptionPane;
 
 public class Holiday {
     private static final String dbURL = "jdbc:derby://localhost:1527/Magician Application";
     public static Connection connection;
-    private final Bookings bookings = new Bookings();
-    private final Waitlist waitlist = new Waitlist();
+    private static ResultSet results;
+    private static PreparedStatement statement;
+        
     
     Holiday(){
         try{
@@ -21,9 +21,7 @@ public class Holiday {
     }
     
     //add a holiday to the database
-    public void addHoliday(String holidayName){
-        PreparedStatement statement;
-        
+    public static void addHoliday(String holidayName){
         try {
             statement = connection.prepareStatement("INSERT INTO Holiday (name) "
                     + "VALUES (?)");
@@ -34,9 +32,7 @@ public class Holiday {
         }
     }
     
-    public void removeHoliday(String holidayName){
-        PreparedStatement statement;
-        
+    public static void removeHoliday(String holidayName){
         try {
             statement = connection.prepareStatement("DELETE FROM Holiday "
                     + "WHERE Name = ?");
@@ -46,14 +42,11 @@ public class Holiday {
             exception.printStackTrace();
         }
         
-        bookings.removeHoliday(holidayName);
-        waitlist.removeHoliday(holidayName);
+        Bookings.removeHoliday(holidayName);
+        Waitlist.removeHoliday(holidayName);
     }
     
-    public ResultSet getHolidays(){
-        ResultSet results;
-        PreparedStatement statement;
-        
+    public static ResultSet getHolidays(){
         try {
             statement = connection.prepareStatement("SELECT * FROM Holiday");
             results = statement.executeQuery();

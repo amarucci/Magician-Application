@@ -10,7 +10,8 @@ import javax.swing.JOptionPane;
 public class Waitlist {
     private static final String dbURL = "jdbc:derby://localhost:1527/Magician Application";
     public static Connection connection;
-    private static final Bookings bookings = new Bookings();
+    private static ResultSet results;
+    private static PreparedStatement statement;
     
     Waitlist(){
         try{
@@ -24,15 +25,12 @@ public class Waitlist {
     //simply returns all the waitlist in the database
     //calls the other get getWaitlist method with no search filter, just so its
     //not weird when you call it
-    public ResultSet getWaitList(){
+    public static ResultSet getWaitList(){
         return getWaitList("");
     }
     
     //simply returns all the waitlist in the database(orders by holiday)(and with a filter)
-    public ResultSet getWaitList(String filter){
-        PreparedStatement statement;
-        ResultSet results;
-        
+    public static ResultSet getWaitList(String filter){
         try {
             //uses ILIKE for case insensitive
             statement = connection.prepareStatement("SELECT * FROM WaitList "
@@ -49,8 +47,7 @@ public class Waitlist {
     }
 
     //add an entry to the waitlist
-    public void insertWaitlist(String holiday, String name){
-        PreparedStatement statement;
+    public static void insertWaitlist(String holiday, String name){
         java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
         
         try {
@@ -68,11 +65,12 @@ public class Waitlist {
     
     
     //updates the bookings and waitlsit database when a magician is removed
-    void magicianAdded(String name) {
-        PreparedStatement statement;
-        ResultSet results;
-        
-        //get all the unique holidays with distinct
+    /*
+    ---------------------------------------------------------------*
+    fix this shit for real
+    *---------------------------------------------------------------
+    */
+    public static void magicianAdded(String name) {
         try{
             statement = connection.prepareStatement("SELECT Holiday FROM Waitlist "
                     + "GROUP BY Holiday");
@@ -86,12 +84,10 @@ public class Waitlist {
     }
     
     //adds customers to the waitlist when a magician is remoevd
-    void magicianRemoved(String name){
-        PreparedStatement statement;
-        ResultSet results;
+    public static void magicianRemoved(String name){
         java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
         
-        results = bookings.getBookingsByMagician(name);
+        results = Bookings.getBookingsByMagician(name);
         
         try{
             while(results.next()){
@@ -110,9 +106,7 @@ public class Waitlist {
     }
 
     //removes anyone with this holiday booked
-    void removeHoliday(String holidayName) {
-        PreparedStatement statement;
-        
+    public static void removeHoliday(String holidayName) {        
         try{
             statement = connection.prepareStatement("DELETE FROM Waitlist "
                     + "WHERE Holiday = ?");
