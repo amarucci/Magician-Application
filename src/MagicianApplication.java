@@ -68,6 +68,12 @@ public class MagicianApplication extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Lucida Sans Unicode", 1, 14)); // NOI18N
         jLabel1.setText("Magician Application");
 
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
+            }
+        });
+
         btnBook.setText("Book");
         btnBook.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -338,21 +344,11 @@ public class MagicianApplication extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void rbtnBookingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnBookingsActionPerformed
-        //filter By Holiday is by detault in the text box so if they change it and still want the filter
-        if("Filter By Holiday".equals(txtFilter.getText())){
-            outputBookings(bookings.getBookings()); //haven't changed the filter, display all
-        }else{
-            outputBookings(bookings.getBookings(txtFilter.getText())); //chagned filter, only show filtered
-        }
+        outputTextArea();
     }//GEN-LAST:event_rbtnBookingsActionPerformed
 
     private void rbtnWaitlistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnWaitlistActionPerformed
-        //filter is by detauly in the text box so if they change it and still want the filter
-        if("Filter By Holiday".equals(txtFilter.getText())){ 
-            outputWaitList(waitlist.getWaitList());//haven't changed the filter, display all
-        }else{
-            outputWaitList(waitlist.getWaitList(txtFilter.getText()));//chagned filter, only show filtered
-        }
+        outputTextArea();
     }//GEN-LAST:event_rbtnWaitlistActionPerformed
 
     private void txtFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFilterActionPerformed
@@ -379,14 +375,22 @@ public class MagicianApplication extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddHolidayActionPerformed
 
     private void btnRemoveMagicianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveMagicianActionPerformed
-        magician.removeMagician((String)cmbRemoveMagician.getSelectedItem());
-        updateRemoveMagician();
+        if(JOptionPane.showConfirmDialog(this.rootPane,"Are you sure you want to remove this magician?") == JOptionPane.YES_OPTION){
+            magician.removeMagician((String)cmbRemoveMagician.getSelectedItem());
+            updateRemoveMagician();
+        }
     }//GEN-LAST:event_btnRemoveMagicianActionPerformed
 
     private void btnRemoveHolidayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveHolidayActionPerformed
-        holiday.removeHoliday((String)cmbRemoveHoliday.getSelectedItem());
-        updateHoliday();
+        if(JOptionPane.showConfirmDialog(this.rootPane,"Are you sure you want to remove this holiday?") == JOptionPane.YES_OPTION){
+            holiday.removeHoliday((String)cmbRemoveHoliday.getSelectedItem());
+            updateHoliday();
+        }
     }//GEN-LAST:event_btnRemoveHolidayActionPerformed
+
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        outputTextArea();
+    }//GEN-LAST:event_jTabbedPane1StateChanged
     
     //updates the remove magician combo box
     public void updateRemoveMagician(){
@@ -396,12 +400,15 @@ public class MagicianApplication extends javax.swing.JFrame {
             cmbRemoveMagician.removeAllItems();
             if (results.next()){//checks if it has any values
                 cmbRemoveMagician.setEnabled(true);
+                //since theres values in the drop down make the remove button enabled
+                btnRemoveMagician.setEnabled(true); 
                 cmbRemoveMagician.addItem(results.getString(1));//add the first index of the result set to the combo box
                 while(results.next()){//and this will be the second index of the result set
                     cmbRemoveMagician.addItem(results.getString(1));
                 }
             }else{
                 cmbRemoveMagician.setEnabled(false);
+                btnRemoveMagician.setEnabled(false);
                 cmbRemoveMagician.addItem("No Magicians");
             }
         } catch (SQLException exception) {
@@ -421,6 +428,8 @@ public class MagicianApplication extends javax.swing.JFrame {
             if(results.next()){//checks if it has any values
                 cmbPickHoliday.setEnabled(true);
                 cmbRemoveHoliday.setEnabled(true);
+                //since theres values in the drop down make the remove button enabled
+                btnRemoveHoliday.setEnabled(true);
                 
                 cmbPickHoliday.addItem(results.getString(1));//add the first index of the result set to the combo box
                 cmbRemoveHoliday.addItem(results.getString(1));
@@ -431,6 +440,7 @@ public class MagicianApplication extends javax.swing.JFrame {
             }else{
                 cmbPickHoliday.setEnabled(false);
                 cmbRemoveHoliday.setEnabled(false);
+                btnRemoveHoliday.setEnabled(false);
                 cmbPickHoliday.addItem("No Holidays");
                 cmbRemoveHoliday.addItem("No Holidays");
             }
@@ -458,7 +468,7 @@ public class MagicianApplication extends javax.swing.JFrame {
         
         //sets the text field, all pretty and stuff.
         try {
-            jTextArea1.setText("No Results Found"); //this will be shown if nothing is found in results
+            jTextArea1.setText("No Bookings Found"); //this will be shown if nothing is found in results
             while(results.next()){
                 output += String.format(format,results.getString("Magician")
                         , results.getString("Holiday")
@@ -477,7 +487,7 @@ public class MagicianApplication extends javax.swing.JFrame {
         
         //sets the text field all pretty and stuff
         try {
-            jTextArea1.setText("No Results Found"); //this will be shown if nothing is found in results
+            jTextArea1.setText("No Waitlist Found"); //this will be shown if nothing is found in results
             while(results.next()){
                 output += String.format(format,results.getString("Customer")
                         , results.getString("Holiday"), results.getTimestamp("Timestamp"));
@@ -487,6 +497,26 @@ public class MagicianApplication extends javax.swing.JFrame {
             exception.printStackTrace();
         }
     }
+    
+    //will check which radio button is selected and then output the information to the text area
+    private void outputTextArea() {
+        if(rbtnBookings.isSelected()){
+            //filter By Holiday is by detault in the text box so if they change it and still want the filter
+            if("Filter By Holiday".equals(txtFilter.getText())){
+                outputBookings(bookings.getBookings()); //haven't changed the filter, display all
+            }else{
+                outputBookings(bookings.getBookings(txtFilter.getText())); //chagned filter, only show filtered
+            }
+        } else if(rbtnWaitlist.isSelected()){
+            //filter is by detauly in the text box so if they change it and still want the filter
+            if("Filter By Holiday".equals(txtFilter.getText())){ 
+                outputWaitList(waitlist.getWaitList());//haven't changed the filter, display all
+            }else{
+                outputWaitList(waitlist.getWaitList(txtFilter.getText()));//chagned filter, only show filtered
+            }
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -557,4 +587,5 @@ public class MagicianApplication extends javax.swing.JFrame {
     private javax.swing.JTextField txtLastName;
     private javax.swing.JTextField txtMagician;
     // End of variables declaration//GEN-END:variables
+
 }

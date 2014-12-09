@@ -68,8 +68,8 @@ public class Magician {
             statement.executeUpdate();
             
             //updates the booking and then the waitlist
-            waitlist.magicianRemoved(name);
             bookings.magicianRemoved(name);
+            waitlist.magicianRemoved(name);
         } catch (SQLException exception){
             exception.printStackTrace();
         }

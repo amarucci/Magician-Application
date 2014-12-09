@@ -3,7 +3,6 @@
  */
 
 import java.sql.*;
-import java.util.Calendar;
 import javax.swing.JOptionPane;
 
 public class Bookings {
@@ -84,7 +83,7 @@ public class Bookings {
         ResultSet results;
         
         try {
-            statement = connection.prepareStatement("SELECT * FROM Booking"
+            statement = connection.prepareStatement("SELECT * FROM Booking "
                     + "WHERE Magician = ?");
             statement.setString(1,name);
             results = statement.executeQuery();
@@ -125,13 +124,43 @@ public class Bookings {
         return magician;
     }
     
+    //deletes the rows where the magician who was removed had bookings
     public void magicianRemoved(String name){
         PreparedStatement statement;
+        ResultSet results;
         
         try {
-            statement = connection.prepareStatement("DELETE * FROM Booking"
+            //get all the people that had that magician
+            statement = connection.prepareStatement("SELECT * FROM Booking "
+                    + "WHERE Magician = ?");
+            statement.setString(1, name);
+            results = statement.executeQuery();
+            
+            //delete those entries
+            //this is done before the adding to stop any conflict
+            statement = connection.prepareStatement("DELETE FROM Booking "
                     + "WHERE Magician = ?");
             statement.setString(1,name);
+            statement.executeUpdate();
+            
+            //add them to booking
+            //if they can't be added this method will automatically put them in the wait list
+            while(results.next()){
+                addBooking(results.getString("Customer"),results.getString("Holiday"));
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    //removes anyone with this holiday booked
+    void removeHoliday(String holidayName) {
+        PreparedStatement statement;
+        
+        try{
+            statement = connection.prepareStatement("DELETE FROM Booking "
+                    + "WHERE Holiday = ?");
+            statement.setString(1,holidayName);
             statement.executeUpdate();
         } catch (SQLException exception) {
             exception.printStackTrace();

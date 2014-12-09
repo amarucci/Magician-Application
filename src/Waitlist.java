@@ -21,12 +21,14 @@ public class Waitlist {
         }
     }
     
-    //simply returns all the waitlist in the database(orders by tiemstamp)
+    //simply returns all the waitlist in the database
+    //calls the other get getWaitlist method with no search filter, just so its
+    //not weird when you call it
     public ResultSet getWaitList(){
         return getWaitList("");
     }
     
-    //simply returns all the waitlist in the database(orders by tiemstamp)(and with a filter)
+    //simply returns all the waitlist in the database(orders by holiday)(and with a filter)
     public ResultSet getWaitList(String filter){
         PreparedStatement statement;
         ResultSet results;
@@ -72,11 +74,12 @@ public class Waitlist {
         
         //get all the unique holidays with distinct
         try{
-            statement = connection.prepareStatement("SELECT * FROM Waitlist ORDER BY Timestamp ASC");
+            statement = connection.prepareStatement("SELECT Holiday FROM Waitlist "
+                    + "GROUP BY Holiday");
             results = statement.executeQuery();
             while(results.next()){
-                JOptionPane.showMessageDialog(null,results.getString("Holiday")+" "+results.getString("Customer"));
-            }
+                JOptionPane.showMessageDialog(null,results.getString("Holiday"));
+            } 
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -98,7 +101,23 @@ public class Waitlist {
                 statement.setString(2,results.getString("Holiday"));
                 statement.setTimestamp(3,currentTimestamp);
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, results.getString("Customer") + 
+                        " waitlisted for " + results.getString("Holiday"));
             }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    //removes anyone with this holiday booked
+    void removeHoliday(String holidayName) {
+        PreparedStatement statement;
+        
+        try{
+            statement = connection.prepareStatement("DELETE FROM Waitlist "
+                    + "WHERE Holiday = ?");
+            statement.setString(1,holidayName);
+            statement.executeUpdate();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

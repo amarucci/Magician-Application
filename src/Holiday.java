@@ -8,6 +8,8 @@ import javax.swing.JOptionPane;
 public class Holiday {
     private static final String dbURL = "jdbc:derby://localhost:1527/Magician Application";
     public static Connection connection;
+    private final Bookings bookings = new Bookings();
+    private final Waitlist waitlist = new Waitlist();
     
     Holiday(){
         try{
@@ -43,6 +45,9 @@ public class Holiday {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
+        
+        bookings.removeHoliday(holidayName);
+        waitlist.removeHoliday(holidayName);
     }
     
     public ResultSet getHolidays(){
