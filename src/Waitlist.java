@@ -47,14 +47,12 @@ public class Waitlist {
     }
 
     //add an entry to the waitlist
-    public static void insertWaitlist(String holiday, String name){
-        java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
-        
+    public static void insertWaitlist(String holiday, String name,java.sql.Timestamp timestamp){        
         try {
             statement = connection.prepareStatement("INSERT INTO Waitlist "
                     + "(timeStamp, holiday, customer) "
                     + "VALUES (?, ?, ?)");
-            statement.setTimestamp(1, currentTimestamp);
+            statement.setTimestamp(1, timestamp);
             statement.setString(2, holiday);  
             statement.setString(3, name);
             statement.executeUpdate();
@@ -65,18 +63,18 @@ public class Waitlist {
     
     
     //updates the bookings and waitlsit database when a magician is removed
-    /*
-    ---------------------------------------------------------------*
-    fix this shit for real
-    *---------------------------------------------------------------
-    */
     public static void magicianAdded(String name) {
+        String lastHoliday = "";//stores the last holiday used
         try{
-            statement = connection.prepareStatement("SELECT Holiday FROM Waitlist "
-                    + "GROUP BY Holiday");
+            statement = connection.prepareStatement("SELECT * FROM Waitlist "
+                    + "ORDER BY Holiday, Timestamp ASC");
             results = statement.executeQuery();
             while(results.next()){
-                JOptionPane.showMessageDialog(null,results.getString("Holiday"));
+                if(!results.getString("Holiday").equals(lastHoliday)){
+                    lastHoliday = results.getString("Holiday");
+                    Bookings.addBooking(results.getString("Customer"), lastHoliday,results.getTimestamp("Timestamp"));
+                    removeWaitlist(results.getTimestamp("Timestamp"));
+                }
             } 
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -84,9 +82,7 @@ public class Waitlist {
     }
     
     //adds customers to the waitlist when a magician is remoevd
-    public static void magicianRemoved(String name){
-        java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
-        
+    public static void magicianRemoved(String name){        
         results = Bookings.getBookingsByMagician(name);
         
         try{
@@ -95,7 +91,7 @@ public class Waitlist {
                         + "(Customer, Holiday,Timestamp) VALUES (?,?,?)");
                 statement.setString(1,results.getString("Customer"));
                 statement.setString(2,results.getString("Holiday"));
-                statement.setTimestamp(3,currentTimestamp);
+                statement.setTimestamp(3,results.getTimestamp("Timestamp"));
                 statement.executeUpdate();
                 JOptionPane.showMessageDialog(null, results.getString("Customer") + 
                         " waitlisted for " + results.getString("Holiday"));
@@ -111,6 +107,18 @@ public class Waitlist {
             statement = connection.prepareStatement("DELETE FROM Waitlist "
                     + "WHERE Holiday = ?");
             statement.setString(1,holidayName);
+            statement.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+    
+    //works based on time stamp because its the only value guarenteed to be unique
+    public static void removeWaitlist(java.sql.Timestamp timeStamp){
+        try{
+            statement = connection.prepareStatement("DELETE FROM Waitlist "
+                    + "WHERE Timestamp = ?");
+            statement.setTimestamp(1,timeStamp);
             statement.executeUpdate();
         } catch (SQLException exception) {
             exception.printStackTrace();

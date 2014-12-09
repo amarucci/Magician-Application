@@ -44,11 +44,7 @@ public class Magician {
             statement.executeUpdate();
             
             //updates the wait and booking list
-            /* should this be a method in each class
-            i.e. booking has add magician that books and then waitlist has add magician
-                    that takes off the waitlist
-            or should it all be done here using the methods of the class?
-            */
+            //booking is updated from waitlist
             Waitlist.magicianAdded(name);
         } catch (SQLException exception){
             JOptionPane.showMessageDialog(null, "Magician already exists");

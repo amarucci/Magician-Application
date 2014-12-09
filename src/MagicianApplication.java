@@ -8,11 +8,16 @@ public class MagicianApplication extends javax.swing.JFrame {
     /**
      * Creates new form MagicianApplication
      */
+
+    Holiday holiday = new Holiday();
+    Waitlist waitlist = new Waitlist();
+    Magician magician = new Magician();
+    Bookings bookings = new Bookings();
     
     public MagicianApplication() {
         initComponents();
         updateRemoveMagician();
-        updateHoliday();
+        updateHoliday();   
     }
 
     /**
@@ -355,9 +360,16 @@ public class MagicianApplication extends javax.swing.JFrame {
         applyFilter();
     }//GEN-LAST:event_btnApplyActionPerformed
 
+    //looks at combo boxes to see if they have values before it lets you book
     private void btnBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookActionPerformed
-        Bookings.addBooking(txtFirstName.getText() + " " + txtLastName.getText(),
-            (String)cmbPickHoliday.getSelectedItem());
+        if(!cmbRemoveMagician.isEnabled()){
+            JOptionPane.showMessageDialog(this.rootPane,"No Magicians");
+        }else if(!cmbPickHoliday.isEnabled()){
+            JOptionPane.showMessageDialog(this.rootPane,"No Holidays");
+        }else{
+            Bookings.addBooking(txtFirstName.getText() + " " + txtLastName.getText(),
+                (String)cmbPickHoliday.getSelectedItem());
+        }
     }//GEN-LAST:event_btnBookActionPerformed
 
     private void btnAddMagicianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMagicianActionPerformed
@@ -459,7 +471,7 @@ public class MagicianApplication extends javax.swing.JFrame {
     
     //outputs the bookings info to the text area
     private void outputBookings(ResultSet results){
-        String format = "%-20s %-12s %s %n";
+        String format = "%-12s %-12s %s %n";
         String output = String.format(format,"Magician","Holiday","Customer");
         
         //sets the text field, all pretty and stuff.

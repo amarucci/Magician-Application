@@ -3,6 +3,7 @@
  */
 
 import java.sql.*;
+import java.util.Calendar;
 import javax.swing.JOptionPane;
 
 public class Bookings {
@@ -43,15 +44,16 @@ public class Bookings {
         return results;
     }
     
-    //adds the booking to the data base
-    private static void insertBooking(String magician, String holiday, String name){
+    //adds the booking to the data base 
+    private static void insertBooking(String magician, String holiday, String name, java.sql.Timestamp timestamp){
         try {
             statement = connection.prepareStatement("INSERT INTO Booking "
-                        + "(Magician, holiday, customer) "
-                        + "VALUES (?, ?, ?)");
+                        + "(Magician, holiday, customer, timeStamp) "
+                        + "VALUES (?, ?, ?,?)");
                 statement.setString(1, magician);
                 statement.setString(2, holiday);  
                 statement.setString(3, name);
+                statement.setTimestamp(4, timestamp);
                 statement.executeUpdate();
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -59,16 +61,25 @@ public class Bookings {
     }
     
     //adds a bookign to the bookings database
+    //calls other add booking with the current timestamp. this is used when there is no 
+    //timestamp already, i.e. a new booking. the other one is for bookings that were moved
     public static void addBooking(String name, String holiday){
+        java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+        
+        addBooking(name, holiday, currentTimestamp);
+    }
+    
+    //moves a booking to the wait list or booking database that already has timestamp
+    public static void addBooking(String name, String holiday, java.sql.Timestamp timestamp){
         String magician;
         magician = getFreeMagicians(holiday);
         
         if(magician != null){ //book them becuase there is a person avaliable
-            insertBooking(magician, holiday, name);
+            insertBooking(magician, holiday, name,timestamp);
             JOptionPane.showMessageDialog(null, name+" was booked for "
                         +holiday +" with magician "+magician);
         }else{ //put them in the waitlist
-            Waitlist.insertWaitlist(holiday,name);
+            Waitlist.insertWaitlist(holiday,name,timestamp);
             JOptionPane.showMessageDialog(null, name+" was wait listed for " + holiday);
         }
     }
@@ -134,7 +145,7 @@ public class Bookings {
             //add them to booking
             //if they can't be added this method will automatically put them in the wait list
             while(results.next()){
-                addBooking(results.getString("Customer"),results.getString("Holiday"));
+                addBooking(results.getString("Customer"),results.getString("Holiday"),results.getTimestamp("timestamp"));
             }
         } catch (SQLException exception) {
             exception.printStackTrace();

@@ -3,6 +3,7 @@
  */
 
 import java.sql.*;
+import javax.swing.JOptionPane;
 
 public class Holiday {
     private static final String dbURL = "jdbc:derby://localhost:1527/Magician Application";
@@ -23,12 +24,12 @@ public class Holiday {
     //add a holiday to the database
     public static void addHoliday(String holidayName){
         try {
-            statement = connection.prepareStatement("INSERT INTO Holiday (name) "
+            statement = connection.prepareStatement("INSERT INTO Holiday (Name) "
                     + "VALUES (?)");
             statement.setString(1, holidayName);
             statement.executeUpdate();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            JOptionPane.showMessageDialog(null,"Holiday Already Exists");
         }
     }
     
