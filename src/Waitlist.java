@@ -72,7 +72,7 @@ public class Waitlist {
                 if(!results.getString("Holiday").equals(lastHoliday)){
                     lastHoliday = results.getString("Holiday");
                     Bookings.addBooking(results.getString("Customer"), lastHoliday,results.getTimestamp("Timestamp"));
-                    removeWaitlist(results.getString("Cutomer"),results.getString("Holiday"));
+                    removeWaitlist(results.getString("Customer"),results.getString("Holiday"));
                 }
             } 
         } catch (SQLException exception) {
