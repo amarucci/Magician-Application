@@ -65,7 +65,8 @@ public class Bookings {
     //timestamp already, i.e. a new booking. the other one is for bookings that were moved
     public static void addBooking(String name, String holiday){
         java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
-        
+        //since this is only called when new bookings are added we can add a customer here
+        Customer.addCustomer(name);
         addBooking(name, holiday, currentTimestamp);
     }
     
@@ -159,6 +160,71 @@ public class Bookings {
                     + "WHERE Holiday = ?");
             statement.setString(1,holidayName);
             statement.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+    
+    public static void removeBooking(String name, String holiday){
+        ResultSet waitlistResult;
+        try{
+            //get all the people that had that magician
+            statement = connection.prepareStatement("SELECT * FROM Booking "
+                    + "WHERE Customer = ? AND Holiday = ?");
+            statement.setString(1, name);
+            statement.setString(2,holiday);
+            results = statement.executeQuery();
+            
+            //delete those entries
+            //this is done before the adding to stop any conflict
+            statement = connection.prepareStatement("DELETE FROM Booking "
+                    + "WHERE Customer = ? AND Holiday = ?");
+            statement.setString(1, name);
+            statement.setString(2, holiday);
+            statement.executeUpdate();
+            
+            //see if anyone can be booked from the waitlist
+            //this will get anyone on the waitlist that wants this holiday
+            results.next(); //get the first index
+            waitlistResult = Waitlist.getWaitList(results.getString("Holiday"));
+            
+            //if there is a result add it to the booking
+            if(waitlistResult.next()){
+                addBooking(waitlistResult.getString("Customer"), 
+                           waitlistResult.getString("Holiday"),
+                           waitlistResult.getTimestamp("Timestamp"));
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+    
+    public static void removeCustomer(String name){
+        ResultSet waitlistResults = null;
+        String lastHoliday = "";//stores the last holiday used
+        try{
+            //get the holiday(s) this person was booked for
+            statement = connection.prepareStatement("SELECT Holiday FROM Booking "
+                    + "WHERE Customer =?");
+            statement.setString(1,name);
+            results = statement.executeQuery();
+            
+            //remove this person
+            statement = connection.prepareStatement("DELETE FROM Booking "
+                    + "WHERE Customer = ?");
+            statement.setString(1,name);
+            statement.executeUpdate();
+            
+            //get everyone on the wait list that wants this holiday
+            while(results.next()){ //this will be the holiday the customer had booked (can be more than one)
+                waitlistResults = Waitlist.getWaitList(results.getString("Holiday"));//this is people who want that holiday
+                //book these people
+                if(waitlistResults.next()){ //if there was anyone who wanted that holiday
+                    Bookings.addBooking(waitlistResults.getString("Customer"), 
+                                        waitlistResults.getString("Holiday"),
+                                        waitlistResults.getTimestamp("Timestamp"));
+                }
+            }
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

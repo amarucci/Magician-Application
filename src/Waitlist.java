@@ -29,10 +29,9 @@ public class Waitlist {
         return getWaitList("");
     }
     
-    //simply returns all the waitlist in the database(orders by holiday)(and with a filter)
+    //simply returns all the waitlist in the database(orders by timestamp)(and with a filter)
     public static ResultSet getWaitList(String filter){
         try {
-            //uses ILIKE for case insensitive
             statement = connection.prepareStatement("SELECT * FROM WaitList "
                     + "WHERE Holiday LIKE ? "
                     + "ORDER BY Timestamp ASC");
@@ -73,7 +72,7 @@ public class Waitlist {
                 if(!results.getString("Holiday").equals(lastHoliday)){
                     lastHoliday = results.getString("Holiday");
                     Bookings.addBooking(results.getString("Customer"), lastHoliday,results.getTimestamp("Timestamp"));
-                    removeWaitlist(results.getTimestamp("Timestamp"));
+                    removeWaitlist(results.getString("Cutomer"),results.getString("Holiday"));
                 }
             } 
         } catch (SQLException exception) {
@@ -114,14 +113,28 @@ public class Waitlist {
     }
     
     //works based on time stamp because its the only value guarenteed to be unique
-    public static void removeWaitlist(java.sql.Timestamp timeStamp){
+    public static void removeWaitlist(String name, String holiday){
         try{
             statement = connection.prepareStatement("DELETE FROM Waitlist "
-                    + "WHERE Timestamp = ?");
-            statement.setTimestamp(1,timeStamp);
+                    + "WHERE Customer = ? AND Holiday = ?");
+            statement.setString(1,name);
+            statement.setString(2,holiday);
             statement.executeUpdate();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
     }
+    
+    //removes the customer from the waitlist
+    public static void removeCustomer(String name) {        
+        try{
+            statement = connection.prepareStatement("DELETE FROM Waitlist "
+                    + "WHERE Customer = ?");
+            statement.setString(1,name);
+            statement.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+      
 }

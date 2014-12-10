@@ -13,11 +13,13 @@ public class MagicianApplication extends javax.swing.JFrame {
     Waitlist waitlist = new Waitlist();
     Magician magician = new Magician();
     Bookings bookings = new Bookings();
+    Customer customer = new Customer();
     
     public MagicianApplication() {
         initComponents();
-        updateRemoveMagician();
-        updateHoliday();   
+        updateMagicianComboBoxes();
+        updateHolidayComboBoxes();  
+        updateCustomerComboBoxes();
     }
 
     /**
@@ -34,24 +36,12 @@ public class MagicianApplication extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         btnBook = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        txtFirstName = new javax.swing.JTextField();
-        txtLastName = new javax.swing.JTextField();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
         jLabel7 = new javax.swing.JLabel();
-        txtHoliday = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         cmbPickHoliday = new javax.swing.JComboBox();
-        btnAddHoliday = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        txtFilter = new javax.swing.JTextField();
-        btnApply = new javax.swing.JButton();
-        rbtnBookings = new javax.swing.JRadioButton();
-        rbtnWaitlist = new javax.swing.JRadioButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jLabel11 = new javax.swing.JLabel();
+        txtCustomerName = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         txtMagician = new javax.swing.JTextField();
@@ -59,9 +49,20 @@ public class MagicianApplication extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         cmbRemoveMagician = new javax.swing.JComboBox();
         btnRemoveMagician = new javax.swing.JButton();
-        jLabel9 = new javax.swing.JLabel();
         cmbRemoveHoliday = new javax.swing.JComboBox();
-        btnRemoveHoliday = new javax.swing.JButton();
+        btnRemoveBooking = new javax.swing.JButton();
+        cmbRemoveCustomer = new javax.swing.JComboBox();
+        jLabel5 = new javax.swing.JLabel();
+        txtHoliday = new javax.swing.JTextField();
+        btnAddHoliday = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        txtFilter = new javax.swing.JTextField();
+        btnApply = new javax.swing.JButton();
+        rbtnBookings = new javax.swing.JRadioButton();
+        rbtnWaitlist = new javax.swing.JRadioButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -82,30 +83,13 @@ public class MagicianApplication extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Add Holiday:");
-
-        jLabel4.setText("Customer First Name:");
-
-        jLabel5.setText("Customer Last Name:");
-
-        txtFirstName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txtFirstName.setText("Anthony");
-
-        txtLastName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txtLastName.setText("Marucci");
-
-        jLabel7.setText("Customer Information:");
-
-        txtHoliday.setText("Holiday");
+        jLabel7.setText("Booking Information");
 
         jLabel3.setText("Holiday:");
 
-        btnAddHoliday.setText("Add");
-        btnAddHoliday.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddHolidayActionPerformed(evt);
-            }
-        });
+        jLabel11.setText("Customer: ");
+
+        txtCustomerName.setText("Cutomer Name");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -115,69 +99,153 @@ public class MagicianApplication extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel2))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(63, 63, 63)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtFirstName)
-                                    .addComponent(txtLastName)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addGap(0, 123, Short.MAX_VALUE)
-                                        .addComponent(btnBook))
-                                    .addComponent(cmbPickHoliday, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtHoliday, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnAddHoliday, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jLabel3)
+                        .addGap(118, 118, 118)
+                        .addComponent(cmbPickHoliday, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel11)
+                        .addGap(104, 104, 104)
+                        .addComponent(txtCustomerName, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(126, 126, 126)
-                                .addComponent(jLabel7))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel3)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(130, 130, 130))
+                            .addComponent(btnBook, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtHoliday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAddHoliday))
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(cmbPickHoliday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                    .addComponent(jLabel11)
+                    .addComponent(txtCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(btnBook)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
                 .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("Book", jPanel1);
+
+        jLabel6.setText("Add Magician:");
+
+        txtMagician.setText("Name");
+
+        btnAddMagician.setText("Add");
+        btnAddMagician.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddMagicianActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("Remove Magician:");
+
+        btnRemoveMagician.setText("Remove");
+        btnRemoveMagician.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveMagicianActionPerformed(evt);
+            }
+        });
+
+        btnRemoveBooking.setText("Remove");
+        btnRemoveBooking.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveBookingActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Add holiday:");
+
+        txtHoliday.setText("Holiday");
+
+        btnAddHoliday.setText("Add");
+        btnAddHoliday.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddHolidayActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Remove Booking:");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel5))
+                        .addGap(43, 43, 43)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtMagician, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                            .addComponent(cmbRemoveMagician, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtHoliday))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRemoveMagician, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                            .addComponent(btnAddMagician, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAddHoliday, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnRemoveBooking))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(cmbRemoveHoliday, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbRemoveCustomer, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtMagician, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAddMagician))
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(cmbRemoveMagician, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRemoveMagician))
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtHoliday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAddHoliday))
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbRemoveHoliday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbRemoveCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnRemoveBooking)
+                .addContainerGap(23, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Manage", jPanel3);
 
         txtFilter.setText("Filter By Holiday");
         txtFilter.addActionListener(new java.awt.event.ActionListener() {
@@ -238,7 +306,7 @@ public class MagicianApplication extends javax.swing.JFrame {
                     .addComponent(rbtnBookings)
                     .addComponent(rbtnWaitlist))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -246,82 +314,6 @@ public class MagicianApplication extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Status", jPanel2);
-
-        jLabel6.setText("Add Magician:");
-
-        txtMagician.setText("Name");
-
-        btnAddMagician.setText("Add");
-        btnAddMagician.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddMagicianActionPerformed(evt);
-            }
-        });
-
-        jLabel8.setText("Remove Magician:");
-
-        btnRemoveMagician.setText("Remove");
-        btnRemoveMagician.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRemoveMagicianActionPerformed(evt);
-            }
-        });
-
-        jLabel9.setText("Remove Holiday:");
-
-        btnRemoveHoliday.setText("Remove");
-        btnRemoveHoliday.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRemoveHolidayActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel9))
-                .addGap(43, 43, 43)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtMagician, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
-                    .addComponent(cmbRemoveMagician, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cmbRemoveHoliday, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRemoveMagician, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAddMagician, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(btnRemoveHoliday, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(1, 1, 1)))
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtMagician, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAddMagician))
-                .addGap(18, 22, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(cmbRemoveMagician, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRemoveMagician))
-                .addGap(18, 22, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(cmbRemoveHoliday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRemoveHoliday))
-                .addContainerGap(121, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Manage", jPanel3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -344,21 +336,50 @@ public class MagicianApplication extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void rbtnBookingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnBookingsActionPerformed
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
         outputTextArea();
-    }//GEN-LAST:event_rbtnBookingsActionPerformed
+    }//GEN-LAST:event_jTabbedPane1StateChanged
+
+    private void btnRemoveBookingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveBookingActionPerformed
+        if(JOptionPane.showConfirmDialog(this.rootPane,"Are you sure you want to remove this booking?") == JOptionPane.YES_OPTION){
+            //removes from waitlist first because if you delete a booking you want it to 
+            //delete all the bookings with that date, but if it deletes bookings first
+            //it will put bookings on the waitlist and there is a chance its one you 
+            ///wanted to remove. 
+            Waitlist.removeWaitlist((String)cmbRemoveCustomer.getSelectedItem(),
+                                  (String)cmbRemoveHoliday.getSelectedItem());
+            Bookings.removeBooking((String)cmbRemoveCustomer.getSelectedItem(),
+                                  (String)cmbRemoveHoliday.getSelectedItem());
+        }
+    }//GEN-LAST:event_btnRemoveBookingActionPerformed
+
+    private void btnRemoveMagicianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveMagicianActionPerformed
+        if(JOptionPane.showConfirmDialog(this.rootPane,"Are you sure you want to remove this magician?") == JOptionPane.YES_OPTION){
+            Magician.removeMagician((String)cmbRemoveMagician.getSelectedItem());
+            updateMagicianComboBoxes();
+        }
+    }//GEN-LAST:event_btnRemoveMagicianActionPerformed
+
+    private void btnAddMagicianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMagicianActionPerformed
+        Magician.addMagician(txtMagician.getText());
+        updateMagicianComboBoxes();
+    }//GEN-LAST:event_btnAddMagicianActionPerformed
 
     private void rbtnWaitlistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnWaitlistActionPerformed
         outputTextArea();
     }//GEN-LAST:event_rbtnWaitlistActionPerformed
 
-    private void txtFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFilterActionPerformed
-        applyFilter();
-    }//GEN-LAST:event_txtFilterActionPerformed
+    private void rbtnBookingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnBookingsActionPerformed
+        outputTextArea();
+    }//GEN-LAST:event_rbtnBookingsActionPerformed
 
     private void btnApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApplyActionPerformed
         applyFilter();
     }//GEN-LAST:event_btnApplyActionPerformed
+
+    private void txtFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFilterActionPerformed
+        applyFilter();
+    }//GEN-LAST:event_txtFilterActionPerformed
 
     //looks at combo boxes to see if they have values before it lets you book
     private void btnBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookActionPerformed
@@ -367,41 +388,19 @@ public class MagicianApplication extends javax.swing.JFrame {
         }else if(!cmbPickHoliday.isEnabled()){
             JOptionPane.showMessageDialog(this.rootPane,"No Holidays");
         }else{
-            Bookings.addBooking(txtFirstName.getText() + " " + txtLastName.getText(),
+            Bookings.addBooking(txtCustomerName.getText(),
                 (String)cmbPickHoliday.getSelectedItem());
+            updateCustomerComboBoxes();
         }
     }//GEN-LAST:event_btnBookActionPerformed
 
-    private void btnAddMagicianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMagicianActionPerformed
-        Magician.addMagician(txtMagician.getText());
-        updateRemoveMagician();
-    }//GEN-LAST:event_btnAddMagicianActionPerformed
-
     private void btnAddHolidayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddHolidayActionPerformed
         Holiday.addHoliday(txtHoliday.getText());
-        updateHoliday();
+        updateHolidayComboBoxes();
     }//GEN-LAST:event_btnAddHolidayActionPerformed
-
-    private void btnRemoveMagicianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveMagicianActionPerformed
-        if(JOptionPane.showConfirmDialog(this.rootPane,"Are you sure you want to remove this magician?") == JOptionPane.YES_OPTION){
-            Magician.removeMagician((String)cmbRemoveMagician.getSelectedItem());
-            updateRemoveMagician();
-        }
-    }//GEN-LAST:event_btnRemoveMagicianActionPerformed
-
-    private void btnRemoveHolidayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveHolidayActionPerformed
-        if(JOptionPane.showConfirmDialog(this.rootPane,"Are you sure you want to remove this holiday?") == JOptionPane.YES_OPTION){
-            Holiday.removeHoliday((String)cmbRemoveHoliday.getSelectedItem());
-            updateHoliday();
-        }
-    }//GEN-LAST:event_btnRemoveHolidayActionPerformed
-
-    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
-        outputTextArea();
-    }//GEN-LAST:event_jTabbedPane1StateChanged
     
     //updates the remove magician combo box
-    public void updateRemoveMagician(){
+    public void updateMagicianComboBoxes(){
         ResultSet results;
         try {
             results = Magician.getMagicianList();
@@ -424,9 +423,33 @@ public class MagicianApplication extends javax.swing.JFrame {
         }
     }
     
+    //update remove customer drop down
+    public void updateCustomerComboBoxes(){
+        ResultSet results;
+        try {
+            results = Customer.getCustomers();
+            cmbRemoveCustomer.removeAllItems();
+            if (results.next()){//checks if it has any values
+                cmbRemoveCustomer.setEnabled(true);
+                //since theres values in the drop down make the remove button enabled
+                btnRemoveBooking.setEnabled(true); 
+                cmbRemoveCustomer.addItem(results.getString(1));//add the first index of the result set to the combo box
+                while(results.next()){//and this will be the second index of the result set
+                    cmbRemoveCustomer.addItem(results.getString(1));
+                }
+            }else{
+                cmbRemoveCustomer.setEnabled(false);
+                btnRemoveBooking.setEnabled(false);
+                cmbRemoveCustomer.addItem("No Customers");
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+    
     //update holiday combo box
     //since there are two combo boxes that both display the holidays they will be equal
-    public void updateHoliday(){
+    public void updateHolidayComboBoxes(){
         ResultSet results;
         try {
             results = Holiday.getHolidays();
@@ -437,7 +460,7 @@ public class MagicianApplication extends javax.swing.JFrame {
                 cmbPickHoliday.setEnabled(true);
                 cmbRemoveHoliday.setEnabled(true);
                 //since theres values in the drop down make the remove button enabled
-                btnRemoveHoliday.setEnabled(true);
+                btnRemoveBooking.setEnabled(true);
                 
                 cmbPickHoliday.addItem(results.getString(1));//add the first index of the result set to the combo box
                 cmbRemoveHoliday.addItem(results.getString(1));
@@ -448,7 +471,7 @@ public class MagicianApplication extends javax.swing.JFrame {
             }else{
                 cmbPickHoliday.setEnabled(false);
                 cmbRemoveHoliday.setEnabled(false);
-                btnRemoveHoliday.setEnabled(false);
+                btnRemoveBooking.setEnabled(false);
                 cmbPickHoliday.addItem("No Holidays");
                 cmbRemoveHoliday.addItem("No Holidays");
             }
@@ -565,22 +588,22 @@ public class MagicianApplication extends javax.swing.JFrame {
     private javax.swing.JButton btnAddMagician;
     private javax.swing.JButton btnApply;
     private javax.swing.JButton btnBook;
-    private javax.swing.JButton btnRemoveHoliday;
+    private javax.swing.JButton btnRemoveBooking;
     private javax.swing.JButton btnRemoveMagician;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox cmbPickHoliday;
+    private javax.swing.JComboBox cmbRemoveCustomer;
     private javax.swing.JComboBox cmbRemoveHoliday;
     private javax.swing.JComboBox cmbRemoveMagician;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -589,10 +612,9 @@ public class MagicianApplication extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JRadioButton rbtnBookings;
     private javax.swing.JRadioButton rbtnWaitlist;
+    private javax.swing.JTextField txtCustomerName;
     private javax.swing.JTextField txtFilter;
-    private javax.swing.JTextField txtFirstName;
     private javax.swing.JTextField txtHoliday;
-    private javax.swing.JTextField txtLastName;
     private javax.swing.JTextField txtMagician;
     // End of variables declaration//GEN-END:variables
 
