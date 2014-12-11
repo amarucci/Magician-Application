@@ -377,7 +377,7 @@ public class MagicianApplication extends javax.swing.JFrame {
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     private void btnRemoveBookingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveBookingActionPerformed
-        if(JOptionPane.showConfirmDialog(this.rootPane,"Are you sure you want to remove this booking?") == JOptionPane.YES_OPTION){
+        if(JOptionPane.showConfirmDialog(null,"Are you sure you want to remove this booking?") == JOptionPane.YES_OPTION){
             //removes from waitlist first because if you delete a booking you want it to 
             //delete all the bookings with that date, but if it deletes bookings first
             //it will put bookings on the waitlist and there is a chance its one you 
@@ -386,19 +386,22 @@ public class MagicianApplication extends javax.swing.JFrame {
                                   (String)cmbRemoveHoliday.getSelectedItem());
             Bookings.removeBooking((String)cmbRemoveCustomer.getSelectedItem(),
                                   (String)cmbRemoveHoliday.getSelectedItem());
+            JOptionPane.showMessageDialog(null,"Booking removed");
         }
     }//GEN-LAST:event_btnRemoveBookingActionPerformed
 
     private void btnRemoveMagicianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveMagicianActionPerformed
-        if(JOptionPane.showConfirmDialog(this.rootPane,"Are you sure you want to remove this magician?") == JOptionPane.YES_OPTION){
+        if(JOptionPane.showConfirmDialog(null,"Are you sure you want to remove this magician?") == JOptionPane.YES_OPTION){
             Magician.removeMagician((String)cmbRemoveMagician.getSelectedItem());
             updateMagicianComboBoxes();
         }
+        JOptionPane.showMessageDialog(null,(String)cmbRemoveMagician.getSelectedItem()+" removed");
     }//GEN-LAST:event_btnRemoveMagicianActionPerformed
 
     private void btnAddMagicianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMagicianActionPerformed
         Magician.addMagician(txtMagician.getText());
         updateMagicianComboBoxes();
+        JOptionPane.showMessageDialog(null,txtMagician.getText()+" added");
     }//GEN-LAST:event_btnAddMagicianActionPerformed
 
     private void rbtnWaitlistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnWaitlistActionPerformed
@@ -424,9 +427,9 @@ public class MagicianApplication extends javax.swing.JFrame {
     //looks at combo boxes to see if they have values before it lets you book
     private void btnBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookActionPerformed
         if(!cmbRemoveMagician.isEnabled()){
-            JOptionPane.showMessageDialog(this.rootPane,"No Magicians");
+            JOptionPane.showMessageDialog(null,"No Magicians");
         }else if(!cmbPickHoliday.isEnabled()){
-            JOptionPane.showMessageDialog(this.rootPane,"No Holidays");
+            JOptionPane.showMessageDialog(null,"No Holidays");
         }else{
             Bookings.addBooking(txtCustomerName.getText(),
                 (String)cmbPickHoliday.getSelectedItem());
@@ -437,16 +440,20 @@ public class MagicianApplication extends javax.swing.JFrame {
     private void btnAddHolidayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddHolidayActionPerformed
         Holiday.addHoliday(txtHoliday.getText());
         updateHolidayComboBoxes();
+        JOptionPane.showMessageDialog(null,txtHoliday.getText()+" added.");
+        
     }//GEN-LAST:event_btnAddHolidayActionPerformed
 
     private void txtMagicianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMagicianActionPerformed
         Magician.addMagician(txtMagician.getText());
         updateMagicianComboBoxes();
+        JOptionPane.showMessageDialog(null,txtMagician.getText()+" added.");
     }//GEN-LAST:event_txtMagicianActionPerformed
 
     private void txtHolidayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHolidayActionPerformed
         Holiday.addHoliday(txtHoliday.getText());
         updateHolidayComboBoxes();
+        JOptionPane.showMessageDialog(null,txtHoliday.getText()+" added.");
     }//GEN-LAST:event_txtHolidayActionPerformed
     
     //updates the remove magician combo box
