@@ -58,8 +58,8 @@ public class MagicianApplication extends javax.swing.JFrame {
         btnAddHoliday = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        txtFilterByHoliday = new javax.swing.JTextField();
-        btnApplyHolidayFilter = new javax.swing.JButton();
+        txtFilter = new javax.swing.JTextField();
+        btnFilter = new javax.swing.JButton();
         rbtnBookings = new javax.swing.JRadioButton();
         rbtnWaitlist = new javax.swing.JRadioButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -261,17 +261,17 @@ public class MagicianApplication extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Manage", jPanel3);
 
-        txtFilterByHoliday.setText("Filter");
-        txtFilterByHoliday.addActionListener(new java.awt.event.ActionListener() {
+        txtFilter.setText("Filter");
+        txtFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFilterByHolidayActionPerformed(evt);
+                txtFilterActionPerformed(evt);
             }
         });
 
-        btnApplyHolidayFilter.setText("Apply");
-        btnApplyHolidayFilter.addActionListener(new java.awt.event.ActionListener() {
+        btnFilter.setText("Apply");
+        btnFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnApplyHolidayFilterActionPerformed(evt);
+                btnFilterActionPerformed(evt);
             }
         });
 
@@ -300,8 +300,10 @@ public class MagicianApplication extends javax.swing.JFrame {
         jLabel4.setText("Filter By:");
 
         buttonGroup2.add(rtbnFilterByMagician);
+        rtbnFilterByMagician.setSelected(true);
         rtbnFilterByMagician.setText("Magician");
 
+        buttonGroup2.add(rbtnFilterByHoliday);
         rbtnFilterByHoliday.setText("Holiday");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -309,9 +311,9 @@ public class MagicianApplication extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(txtFilterByHoliday, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                .addComponent(txtFilter, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnApplyHolidayFilter))
+                .addComponent(btnFilter))
             .addComponent(jScrollPane1)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jLabel4)
@@ -337,8 +339,8 @@ public class MagicianApplication extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFilterByHoliday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnApplyHolidayFilter))
+                    .addComponent(txtFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFilter))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -400,20 +402,24 @@ public class MagicianApplication extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddMagicianActionPerformed
 
     private void rbtnWaitlistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnWaitlistActionPerformed
+        if(rtbnFilterByMagician.isSelected())
+            rbtnFilterByHoliday.setSelected(true);
+        rtbnFilterByMagician.setEnabled(false);
         outputTextArea();
     }//GEN-LAST:event_rbtnWaitlistActionPerformed
 
     private void rbtnBookingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnBookingsActionPerformed
+        rtbnFilterByMagician.setEnabled(true);
         outputTextArea();
     }//GEN-LAST:event_rbtnBookingsActionPerformed
 
-    private void btnApplyHolidayFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApplyHolidayFilterActionPerformed
-        applyHolidayFilter();
-    }//GEN-LAST:event_btnApplyHolidayFilterActionPerformed
+    private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
+        outputTextArea();
+    }//GEN-LAST:event_btnFilterActionPerformed
 
-    private void txtFilterByHolidayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFilterByHolidayActionPerformed
-        applyHolidayFilter();
-    }//GEN-LAST:event_txtFilterByHolidayActionPerformed
+    private void txtFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFilterActionPerformed
+        outputTextArea();
+    }//GEN-LAST:event_txtFilterActionPerformed
 
     //looks at combo boxes to see if they have values before it lets you book
     private void btnBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookActionPerformed
@@ -524,30 +530,6 @@ public class MagicianApplication extends javax.swing.JFrame {
         }
     }
     
-    //applies a filter by holdiay
-    private void applyHolidayFilter(){
-        if(rbtnBookings.isSelected()){
-            outputBookings(Bookings.getBookingsByHoliday(txtFilterByHoliday.getText()));
-        }else if (rbtnWaitlist.isSelected()){
-            outputWaitList(Waitlist.getWaitList(txtFilterByHoliday.getText()));
-        }else{
-            JOptionPane.showMessageDialog(null, "Nothing selected");
-            txtFilterByHoliday.setText("Filter");
-        }
-    }
-    
-    //applies a filter by magician
-    private void applyMagicianFilter(){
-        if(rbtnBookings.isSelected()){
-            outputBookings(Bookings.getBookingsByMagician(txtFilterByHoliday.getText()));
-        }else if (rbtnWaitlist.isSelected()){
-            outputWaitList(Waitlist.getWaitList(txtFilterByHoliday.getText()));
-        }else{
-            JOptionPane.showMessageDialog(null, "Nothing selected");
-            txtFilterByHoliday.setText("Filter");
-        }
-    }
-    
     //outputs the bookings info to the text area
     private void outputBookings(ResultSet results){
         String format = "%-12s %-12s %s %n";
@@ -586,20 +568,31 @@ public class MagicianApplication extends javax.swing.JFrame {
     }
     
     //will check which radio button is selected and then output the information to the text area
+    //long because there is a lot of checking going on
     private void outputTextArea() {
         if(rbtnBookings.isSelected()){
-            //filter is by detault in the text box so if they change it and still want the filter
-            if("Filter".equals(txtFilterByHoliday.getText())){
-                outputBookings(Bookings.getBookingsByHoliday()); //haven't changed the filter, display all
-            }else{
-                outputBookings(Bookings.getBookingsByHoliday(txtFilterByHoliday.getText())); //chagned filter, only show filtered
+            //this is if the want to search by holiday
+            if(rbtnFilterByHoliday.isSelected()){
+                //filter is by detault in the text box so if they change it and still want the filter
+                if("Filter".equals(txtFilter.getText())){
+                    outputBookings(Bookings.getBookingsByHoliday()); //haven't changed the filter, display all
+                }else{
+                    outputBookings(Bookings.getBookingsByHoliday(txtFilter.getText())); //chagned filter, only show filtered
+                }
+            }else{ //since one or the other has to be selected
+                //filter is by detault in the text box so if they change it and still want the filter
+                if("Filter".equals(txtFilter.getText())){
+                    outputBookings(Bookings.getBookingsByMagician()); //haven't changed the filter, display all
+                }else{
+                    outputBookings(Bookings.getBookingsByMagician(txtFilter.getText())); //chagned filter, only show filtered
+                }
             }
         } else if(rbtnWaitlist.isSelected()){
             //filter is by detault in the text box so if they change it and still want the filter
-            if("Filter".equals(txtFilterByHoliday.getText())){ 
+            if("Filter".equals(txtFilter.getText())){ 
                 outputWaitList(Waitlist.getWaitList());//haven't changed the filter, display all
             }else{
-                outputWaitList(Waitlist.getWaitList(txtFilterByHoliday.getText()));//chagned filter, only show filtered
+                outputWaitList(Waitlist.getWaitList(txtFilter.getText()));//chagned filter, only show filtered
             }
         }
     }
@@ -642,8 +635,8 @@ public class MagicianApplication extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddHoliday;
     private javax.swing.JButton btnAddMagician;
-    private javax.swing.JButton btnApplyHolidayFilter;
     private javax.swing.JButton btnBook;
+    private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnRemoveBooking;
     private javax.swing.JButton btnRemoveMagician;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -673,7 +666,7 @@ public class MagicianApplication extends javax.swing.JFrame {
     private javax.swing.JRadioButton rbtnWaitlist;
     private javax.swing.JRadioButton rtbnFilterByMagician;
     private javax.swing.JTextField txtCustomerName;
-    private javax.swing.JTextField txtFilterByHoliday;
+    private javax.swing.JTextField txtFilter;
     private javax.swing.JTextField txtHoliday;
     private javax.swing.JTextField txtMagician;
     // End of variables declaration//GEN-END:variables

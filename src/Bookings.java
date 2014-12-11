@@ -55,8 +55,8 @@ public class Bookings {
     public static ResultSet getBookingsByMagician(String name){
         try {
             statement = connection.prepareStatement("SELECT * FROM Booking "
-                    + "WHERE Magician = ?");
-            statement.setString(1,name);
+                    + "WHERE Magician LIKE ?");
+            statement.setString(1,name+"%");
             results = statement.executeQuery();
         } catch (SQLException exception) {
             exception.printStackTrace();
