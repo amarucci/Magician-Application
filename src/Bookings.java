@@ -173,7 +173,7 @@ public class Bookings {
     }
     
     public static void removeBooking(String name, String holiday){
-        ResultSet waitlistResult;
+        ResultSet waitlistResult = null;
         try{
             //get all the people that had that magician
             statement = connection.prepareStatement("SELECT * FROM Booking "
@@ -192,8 +192,8 @@ public class Bookings {
             
             //see if anyone can be booked from the waitlist
             //this will get anyone on the waitlist that wants this holiday
-            results.next(); //get the first index
-            waitlistResult = Waitlist.getWaitList(results.getString("Holiday"));
+            if(results.next()) //get the first index
+                waitlistResult = Waitlist.getWaitList(results.getString("Holiday"));
             
             //if there is a result add it to the booking
             if(waitlistResult.next()){
