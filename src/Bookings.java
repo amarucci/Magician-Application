@@ -24,17 +24,39 @@ public class Bookings {
     
     //simply returns all the bookings in the database
     //calls the other get bookings method with no search filter, just so its
-    //not weird when you call it
-    public static ResultSet getBookings(){
-        return getBookings("");
+    //not weird when you call it without a filter
+    public static ResultSet getBookingsByHoliday(){
+        return getBookingsByHoliday("");
     }
     
     //returns all the bookings but with a filter
-    public static ResultSet getBookings(String filter){        
+    public static ResultSet getBookingsByHoliday(String filter){        
         try {
             statement = connection.prepareStatement("SELECT * FROM Booking "
                     + "WHERE Holiday LIKE ?");
             statement.setString(1, filter+"%");
+            results = statement.executeQuery();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            results = null;
+        }
+        
+        return results;
+    }
+    
+    //simply returns all the bookings in the database
+    //calls the other get bookings method with no search filter, just so its
+    //not weird when you call it with out a filter
+    public static ResultSet getBookingsByMagician(){
+        return getBookingsByMagician("");
+    }
+    
+    //returns all the bookings but with a filter
+    public static ResultSet getBookingsByMagician(String name){
+        try {
+            statement = connection.prepareStatement("SELECT * FROM Booking "
+                    + "WHERE Magician = ?");
+            statement.setString(1,name);
             results = statement.executeQuery();
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -83,21 +105,6 @@ public class Bookings {
             Waitlist.insertWaitlist(holiday,name,timestamp);
             JOptionPane.showMessageDialog(null, name+" was wait listed for " + holiday);
         }
-    }
-    
-    //returns the booking information for a given holiday
-    public static ResultSet getBookingsByMagician(String name){
-        try {
-            statement = connection.prepareStatement("SELECT * FROM Booking "
-                    + "WHERE Magician = ?");
-            statement.setString(1,name);
-            results = statement.executeQuery();
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-            results = null;
-        }
-        
-        return results;
     }
     
     //returns a set of magicians that are free for a given date
@@ -201,7 +208,6 @@ public class Bookings {
     
     public static void removeCustomer(String name){
         ResultSet waitlistResults = null;
-        String lastHoliday = "";//stores the last holiday used
         try{
             //get the holiday(s) this person was booked for
             statement = connection.prepareStatement("SELECT Holiday FROM Booking "
